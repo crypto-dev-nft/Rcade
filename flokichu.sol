@@ -4,7 +4,7 @@
    7% fee auto distributed to all hodlers
    0% fee added to another dev wallet as token but can be added
 
-   SafeMath was removed because it is now useless for solidity > 0.8.0
+   SafeMath was removed because it is now useleff for solidity > 0.8.0
 */
 pragma solidity ^0.8.10;
 
@@ -931,7 +931,7 @@ contract YOURTOKEN is Context, IERC20, Ownable {
     ) public override returns (bool) {
         _transfer(sender, recipient, amount);
         require(
-            _allowances[sender][_msgSender()] > amount,
+            _allowances[sender][_msgSender()] >= amount,
             "BEP20: transfer amount exceeds allowance"
         );
         _approve(
@@ -961,7 +961,7 @@ contract YOURTOKEN is Context, IERC20, Ownable {
         returns (bool)
     {
         require(
-            _allowances[_msgSender()][spender] > subtractedValue,
+            _allowances[_msgSender()][spender] >= subtractedValue,
             "BEP20: decreased allowance below zero"
         );
         _approve(
