@@ -936,11 +936,10 @@ contract YOURTOKEN is Context, IERC20, Ownable {
         returns (uint256)
     {
         require(tAmount <= _tTotal, "Amount must be less than supply");
+        Values memory values = _getValues(tAmount, true);
         if (!deductTransferFee) {
-            Values memory values = _getValues(tAmount, true);
             return values.rAmount;
         } else {
-            Values memory values = _getValues(tAmount, true);
             return values.rTransferAmount;
         }
     }
@@ -959,7 +958,6 @@ contract YOURTOKEN is Context, IERC20, Ownable {
     }
 
     function excludeFromReward(address account) public onlyOwner {
-        // require(account != 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D, 'We can not exclude Pancakeswap router.');
         require(!_isExcluded[account], "Account is already excluded");
         if (_rOwned[account] > 0) {
             _tOwned[account] = tokenFromReflection(_rOwned[account]);
@@ -1571,7 +1569,7 @@ contract YOURTOKEN is Context, IERC20, Ownable {
     //New Pancakeswap router version?
     //No problem, just change it!
     function setRouterAddress(address newRouter) external onlyOwner {
-        IUniswapV2Router02 _uniswapV2newRouter = IUniswapV2Router02(newRouter); //v2 router --> 0x10ED43C718714eb63d5aA57B78B54704E256024E
+        IUniswapV2Router02 _uniswapV2newRouter = IUniswapV2Router02(newRouter);
         // Create a pancakeswap pair for this new token
         uniswapV2Pair = IUniswapV2Factory(_uniswapV2newRouter.factory())
             .createPair(address(this), _uniswapV2newRouter.WETH());
