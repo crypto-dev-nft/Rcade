@@ -3,6 +3,8 @@
    5% fee auto added to two dev wallets as bnb
    7% fee auto distributed to all hodlers
    0% fee added to another dev wallet as token but can be added
+
+   SafeMath was removed because it is now useleff for solidity > 0.8.0
 */
 pragma solidity ^0.8.10;
 
@@ -93,249 +95,6 @@ interface IERC20 {
         address indexed spender,
         uint256 value
     );
-}
-
-// CAUTION
-// This version of SafeMath should only be used with Solidity 0.8 or later,
-// because it relies on the compiler's built in overflow checks.
-
-/**
- * @dev Wrappers over Solidity's arithmetic operations.
- *
- * NOTE: `SafeMath` is generally not needed starting with Solidity 0.8, since the compiler
- * now has built in overflow checking.
- */
-library SafeMath {
-    /**
-     * @dev Returns the addition of two unsigned integers, with an overflow flag.
-     *
-     * _Available since v3.4._
-     */
-    function tryAdd(uint256 a, uint256 b)
-        internal
-        pure
-        returns (bool, uint256)
-    {
-        unchecked {
-            uint256 c = a + b;
-            if (c < a) return (false, 0);
-            return (true, c);
-        }
-    }
-
-    /**
-     * @dev Returns the substraction of two unsigned integers, with an overflow flag.
-     *
-     * _Available since v3.4._
-     */
-    function trySub(uint256 a, uint256 b)
-        internal
-        pure
-        returns (bool, uint256)
-    {
-        unchecked {
-            if (b > a) return (false, 0);
-            return (true, a - b);
-        }
-    }
-
-    /**
-     * @dev Returns the multiplication of two unsigned integers, with an overflow flag.
-     *
-     * _Available since v3.4._
-     */
-    function tryMul(uint256 a, uint256 b)
-        internal
-        pure
-        returns (bool, uint256)
-    {
-        unchecked {
-            // Gas optimization: this is cheaper than requiring 'a' not being zero, but the
-            // benefit is lost if 'b' is also tested.
-            // See: https://github.com/OpenZeppelin/openzeppelin-contracts/pull/522
-            if (a == 0) return (true, 0);
-            uint256 c = a * b;
-            if (c / a != b) return (false, 0);
-            return (true, c);
-        }
-    }
-
-    /**
-     * @dev Returns the division of two unsigned integers, with a division by zero flag.
-     *
-     * _Available since v3.4._
-     */
-    function tryDiv(uint256 a, uint256 b)
-        internal
-        pure
-        returns (bool, uint256)
-    {
-        unchecked {
-            if (b == 0) return (false, 0);
-            return (true, a / b);
-        }
-    }
-
-    /**
-     * @dev Returns the remainder of dividing two unsigned integers, with a division by zero flag.
-     *
-     * _Available since v3.4._
-     */
-    function tryMod(uint256 a, uint256 b)
-        internal
-        pure
-        returns (bool, uint256)
-    {
-        unchecked {
-            if (b == 0) return (false, 0);
-            return (true, a % b);
-        }
-    }
-
-    /**
-     * @dev Returns the addition of two unsigned integers, reverting on
-     * overflow.
-     *
-     * Counterpart to Solidity's `+` operator.
-     *
-     * Requirements:
-     *
-     * - Addition cannot overflow.
-     */
-    function add(uint256 a, uint256 b) internal pure returns (uint256) {
-        return a + b;
-    }
-
-    /**
-     * @dev Returns the subtraction of two unsigned integers, reverting on
-     * overflow (when the result is negative).
-     *
-     * Counterpart to Solidity's `-` operator.
-     *
-     * Requirements:
-     *
-     * - Subtraction cannot overflow.
-     */
-    function sub(uint256 a, uint256 b) internal pure returns (uint256) {
-        return a - b;
-    }
-
-    /**
-     * @dev Returns the multiplication of two unsigned integers, reverting on
-     * overflow.
-     *
-     * Counterpart to Solidity's `*` operator.
-     *
-     * Requirements:
-     *
-     * - Multiplication cannot overflow.
-     */
-    function mul(uint256 a, uint256 b) internal pure returns (uint256) {
-        return a * b;
-    }
-
-    /**
-     * @dev Returns the integer division of two unsigned integers, reverting on
-     * division by zero. The result is rounded towards zero.
-     *
-     * Counterpart to Solidity's `/` operator.
-     *
-     * Requirements:
-     *
-     * - The divisor cannot be zero.
-     */
-    function div(uint256 a, uint256 b) internal pure returns (uint256) {
-        return a / b;
-    }
-
-    /**
-     * @dev Returns the remainder of dividing two unsigned integers. (unsigned integer modulo),
-     * reverting when dividing by zero.
-     *
-     * Counterpart to Solidity's `%` operator. This function uses a `revert`
-     * opcode (which leaves remaining gas untouched) while Solidity uses an
-     * invalid opcode to revert (consuming all remaining gas).
-     *
-     * Requirements:
-     *
-     * - The divisor cannot be zero.
-     */
-    function mod(uint256 a, uint256 b) internal pure returns (uint256) {
-        return a % b;
-    }
-
-    /**
-     * @dev Returns the subtraction of two unsigned integers, reverting with custom message on
-     * overflow (when the result is negative).
-     *
-     * CAUTION: This function is deprecated because it requires allocating memory for the error
-     * message unnecessarily. For custom revert reasons use {trySub}.
-     *
-     * Counterpart to Solidity's `-` operator.
-     *
-     * Requirements:
-     *
-     * - Subtraction cannot overflow.
-     */
-    function sub(
-        uint256 a,
-        uint256 b,
-        string memory errorMessage
-    ) internal pure returns (uint256) {
-        unchecked {
-            require(b <= a, errorMessage);
-            return a - b;
-        }
-    }
-
-    /**
-     * @dev Returns the integer division of two unsigned integers, reverting with custom message on
-     * division by zero. The result is rounded towards zero.
-     *
-     * Counterpart to Solidity's `/` operator. Note: this function uses a
-     * `revert` opcode (which leaves remaining gas untouched) while Solidity
-     * uses an invalid opcode to revert (consuming all remaining gas).
-     *
-     * Requirements:
-     *
-     * - The divisor cannot be zero.
-     */
-    function div(
-        uint256 a,
-        uint256 b,
-        string memory errorMessage
-    ) internal pure returns (uint256) {
-        unchecked {
-            require(b > 0, errorMessage);
-            return a / b;
-        }
-    }
-
-    /**
-     * @dev Returns the remainder of dividing two unsigned integers. (unsigned integer modulo),
-     * reverting with custom message when dividing by zero.
-     *
-     * CAUTION: This function is deprecated because it requires allocating memory for the error
-     * message unnecessarily. For custom revert reasons use {tryMod}.
-     *
-     * Counterpart to Solidity's `%` operator. This function uses a `revert`
-     * opcode (which leaves remaining gas untouched) while Solidity uses an
-     * invalid opcode to revert (consuming all remaining gas).
-     *
-     * Requirements:
-     *
-     * - The divisor cannot be zero.
-     */
-    function mod(
-        uint256 a,
-        uint256 b,
-        string memory errorMessage
-    ) internal pure returns (uint256) {
-        unchecked {
-            require(b > 0, errorMessage);
-            return a % b;
-        }
-    }
 }
 
 /**
@@ -1030,7 +789,6 @@ interface IUniswapV2Router02 is IUniswapV2Router01 {
 }
 
 contract YOURTOKEN is Context, IERC20, Ownable {
-    using SafeMath for uint256;
     using Address for address;
     address payable devWalletOne =
         payable(0x000000000000000000000000000000000000dEaD);
@@ -1052,7 +810,7 @@ contract YOURTOKEN is Context, IERC20, Ownable {
     uint256 private _rTotal = (MAX - (MAX % _tTotal));
 
     // Add to liquidity when accumulates 0.1% of supply
-    uint256 private numTokensSellToAddToLiquidity = (_tTotal) / 10000; // swap when you accumulate 0.01% of tokens
+    uint256 private numTokensSellToAddToLiquidity = _tTotal / 10000; // swap when you accumulate 0.01% of tokens
     uint256 private _tFeeTotal;
 
     string private constant _name = "YOURTOKEN";
@@ -1172,13 +930,14 @@ contract YOURTOKEN is Context, IERC20, Ownable {
         uint256 amount
     ) public override returns (bool) {
         _transfer(sender, recipient, amount);
+        require(
+            _allowances[sender][_msgSender()] > amount,
+            "BEP20: transfer amount exceeds allowance"
+        );
         _approve(
             sender,
             _msgSender(),
-            _allowances[sender][_msgSender()].sub(
-                amount,
-                "BEP20: transfer amount exceeds allowance"
-            )
+            _allowances[sender][_msgSender()] - amount
         );
         return true;
     }
@@ -1191,7 +950,7 @@ contract YOURTOKEN is Context, IERC20, Ownable {
         _approve(
             _msgSender(),
             spender,
-            _allowances[_msgSender()][spender].add(addedValue)
+            _allowances[_msgSender()][spender] + addedValue
         );
         return true;
     }
@@ -1201,13 +960,14 @@ contract YOURTOKEN is Context, IERC20, Ownable {
         virtual
         returns (bool)
     {
+        require(
+            _allowances[_msgSender()][spender] > subtractedValue,
+            "BEP20: decreased allowance below zero"
+        );
         _approve(
             _msgSender(),
             spender,
-            _allowances[_msgSender()][spender].sub(
-                subtractedValue,
-                "BEP20: decreased allowance below zero"
-            )
+            _allowances[_msgSender()][spender] - subtractedValue
         );
         return true;
     }
@@ -1244,7 +1004,7 @@ contract YOURTOKEN is Context, IERC20, Ownable {
             "Amount must be less than total reflections"
         );
         uint256 currentRate = _getRate();
-        return rAmount.div(currentRate);
+        return rAmount / currentRate;
     }
 
     function excludeFromReward(address account) public onlyOwner {
@@ -1337,8 +1097,8 @@ contract YOURTOKEN is Context, IERC20, Ownable {
     receive() external payable {}
 
     function _reflectFee(uint256 rFee, uint256 tFee) private {
-        _rTotal = _rTotal.sub(rFee);
-        _tFeeTotal = _tFeeTotal.add(tFee);
+        _rTotal = _rTotal - rFee;
+        _tFeeTotal = _tFeeTotal - tFee;
     }
 
     struct Values {
@@ -1395,10 +1155,11 @@ contract YOURTOKEN is Context, IERC20, Ownable {
         tValues.tDev = calculateDevFee(tAmount, isBuy);
         tValues.tDevBNB = calculatedevBNBFee(tAmount, isBuy);
         tValues.tLiquidity = calculateLiquidityFee(tAmount, isBuy);
-        tValues.tTransferAmount = tAmount
-            .sub(tValues.tFee)
-            .sub(tValues.tLiquidity)
-            .sub(tValues.tDev);
+        tValues.tTransferAmount =
+            tAmount -
+            tValues.tFee -
+            tValues.tLiquidity -
+            tValues.tDev;
         return tValues;
     }
 
@@ -1418,22 +1179,18 @@ contract YOURTOKEN is Context, IERC20, Ownable {
             uint256
         )
     {
-        uint256 rAmount = tAmount.mul(currentRate);
-        uint256 rDevBNB = tDevBNB.mul(currentRate);
-        uint256 rFee = tFee.mul(currentRate);
-        uint256 rLiquidity = tLiquidity.mul(currentRate);
-        uint256 rDev = tDev.mul(currentRate);
-        uint256 rTransferAmount = rAmount
-            .sub(rFee)
-            .sub(rLiquidity)
-            .sub(rDev)
-            .sub(rDevBNB);
+        uint256 rAmount = tAmount * currentRate;
+        uint256 rDevBNB = tDevBNB * currentRate;
+        uint256 rFee = tFee * currentRate;
+        uint256 rLiquidity = tLiquidity * currentRate;
+        uint256 rDev = tDev * currentRate;
+        uint256 rTransferAmount = rAmount - rFee - rLiquidity - rDev - rDevBNB;
         return (rAmount, rTransferAmount, rFee);
     }
 
     function _getRate() private view returns (uint256) {
         (uint256 rSupply, uint256 tSupply) = _getCurrentSupply();
-        return rSupply.div(tSupply);
+        return rSupply / tSupply;
     }
 
     function _getCurrentSupply() private view returns (uint256, uint256) {
@@ -1444,35 +1201,35 @@ contract YOURTOKEN is Context, IERC20, Ownable {
                 _rOwned[_excluded[i]] > rSupply ||
                 _tOwned[_excluded[i]] > tSupply
             ) return (_rTotal, _tTotal);
-            rSupply = rSupply.sub(_rOwned[_excluded[i]]);
-            tSupply = tSupply.sub(_tOwned[_excluded[i]]);
+            rSupply = rSupply - _rOwned[_excluded[i]];
+            tSupply = tSupply - _tOwned[_excluded[i]];
         }
-        if (rSupply < _rTotal.div(_tTotal)) return (_rTotal, _tTotal);
+        if (rSupply < _rTotal / _tTotal) return (_rTotal, _tTotal);
         return (rSupply, tSupply);
     }
 
     function _takeDevForBNB(uint256 tDevBNB) private {
         uint256 currentRate = _getRate();
-        uint256 rDevBNB = tDevBNB.mul(currentRate);
-        _rOwned[address(this)] = _rOwned[address(this)].add(rDevBNB);
+        uint256 rDevBNB = tDevBNB * currentRate;
+        _rOwned[address(this)] = _rOwned[address(this)] + rDevBNB;
         if (_isExcluded[address(this)])
-            _tOwned[address(this)] = _tOwned[address(this)].add(tDevBNB);
+            _tOwned[address(this)] = _tOwned[address(this)] + tDevBNB;
     }
 
     function _takeLiquidity(uint256 tLiquidity) private {
         uint256 currentRate = _getRate();
-        uint256 rLiquidity = tLiquidity.mul(currentRate);
-        _rOwned[address(this)] = _rOwned[address(this)].add(rLiquidity);
+        uint256 rLiquidity = tLiquidity * currentRate;
+        _rOwned[address(this)] = _rOwned[address(this)] + rLiquidity;
         if (_isExcluded[address(this)])
-            _tOwned[address(this)] = _tOwned[address(this)].add(tLiquidity);
+            _tOwned[address(this)] = _tOwned[address(this)] + tLiquidity;
     }
 
     function _takeDev(uint256 tDev) private {
         uint256 currentRate = _getRate();
-        uint256 rDev = tDev.mul(currentRate);
-        _rOwned[devWalletOptional] = _rOwned[devWalletOptional].add(rDev);
+        uint256 rDev = tDev * currentRate;
+        _rOwned[devWalletOptional] = _rOwned[devWalletOptional] + rDev;
         if (_isExcluded[devWalletOptional])
-            _tOwned[devWalletOptional] = _tOwned[devWalletOptional].add(tDev);
+            _tOwned[devWalletOptional] = _tOwned[devWalletOptional] + tDev;
     }
 
     function calculateTaxFee(uint256 _amount, bool isBuy)
@@ -1484,7 +1241,7 @@ contract YOURTOKEN is Context, IERC20, Ownable {
         if (!isBuy) {
             _taxFee = _taxFeeSell;
         }
-        return _amount.mul(_taxFee).div(10**2);
+        return (_amount * _taxFee) / 10**2;
     }
 
     function calculateDevFee(uint256 _amount, bool isBuy)
@@ -1496,7 +1253,7 @@ contract YOURTOKEN is Context, IERC20, Ownable {
         if (!isBuy) {
             _optionalDevFee = _optionalDevFeeSell;
         }
-        return _amount.mul(_optionalDevFeeBuy).div(10**2);
+        return (_amount * _optionalDevFeeBuy) / 10**2;
     }
 
     function calculatedevBNBFee(uint256 _amount, bool isBuy)
@@ -1508,7 +1265,7 @@ contract YOURTOKEN is Context, IERC20, Ownable {
         if (!isBuy) {
             _devBNBFee = _devBNBFeeSell;
         }
-        return _amount.mul(_devBNBFeeBuy).div(10**2);
+        return (_amount * _devBNBFeeBuy) / 10**2;
     }
 
     function calculateLiquidityFee(uint256 _amount, bool isBuy)
@@ -1520,7 +1277,7 @@ contract YOURTOKEN is Context, IERC20, Ownable {
         if (!isBuy) {
             _liquidityFee = _liquidityFeeSell;
         }
-        return _amount.mul(_liquidityFeeBuy).div(10**2);
+        return (_amount * _liquidityFeeBuy) / 10**2;
     }
 
     function removeFees() external onlyOwner {
@@ -1650,22 +1407,20 @@ contract YOURTOKEN is Context, IERC20, Ownable {
         // numToken * _liquidityFeeBuy / (_devBNBFeeBuy +_liquidityFeeBuy ) for liquidity
         // use a magnitude to avoid integer division problem
         uint256 magnitude = 1000;
-        uint256 partForLiquidity = contractTokenBalance
-            .mul(magnitude)
-            .mul(_devBNBFeeBuy)
-            .div(_devBNBFeeBuy + _liquidityFeeBuy)
-            .div(magnitude);
-        uint256 partForDev = contractTokenBalance.sub(partForLiquidity);
+        uint256 partForLiquidity = (contractTokenBalance *
+            magnitude *
+            _devBNBFeeBuy) /
+            (_devBNBFeeBuy + _liquidityFeeBuy) /
+            magnitude;
+        uint256 partForDev = contractTokenBalance - partForLiquidity;
 
         // Swap tokens, and send them to devs
         uint256 originalBalance = address(this).balance;
         swapTokensForETH(partForDev);
-        uint256 swappedBNB = address(this).balance.sub(originalBalance);
-        uint256 halfBnB = swappedBNB.div(2);
+        uint256 swappedBNB = address(this).balance - originalBalance;
+        uint256 halfBnB = swappedBNB / 2;
         (bool success1, ) = devWalletOne.call{value: halfBnB}("");
-        (bool success2, ) = devWalletTwo.call{value: swappedBNB.sub(halfBnB)}(
-            ""
-        );
+        (bool success2, ) = devWalletTwo.call{value: swappedBNB - halfBnB}("");
 
         require(success1 && success2, "Swap and liquify failed");
         // capture the contract's current BNB balance.
@@ -1673,14 +1428,13 @@ contract YOURTOKEN is Context, IERC20, Ownable {
         // swap creates, and not make the liquidity event include any BNB that
         // has been manually sent to the contract
         uint256 initialBalance = address(this).balance;
-        uint256 partForLiquidityToSwap = partForLiquidity.div(2);
-        uint256 partForLiquidityToAdd = partForLiquidity.sub(
-            partForLiquidityToSwap
-        );
+        uint256 partForLiquidityToSwap = partForLiquidity / 2;
+        uint256 partForLiquidityToAdd = partForLiquidity -
+            partForLiquidityToSwap;
         // swap tokens for BNB
         swapTokensForETH(partForLiquidityToSwap);
         // how much BNB did we just swap into?
-        uint256 BnbSwapped = address(this).balance.sub(initialBalance);
+        uint256 BnbSwapped = address(this).balance - initialBalance;
         // add liquidity to pancakeswap
         addLiquidity(partForLiquidityToAdd, BnbSwapped);
         emit SwapAndLiquify(
@@ -1694,10 +1448,10 @@ contract YOURTOKEN is Context, IERC20, Ownable {
         // see "SSL- 03 | Contract gains non-withdrawable BNB via the swapAndLiquifyfunction"
         // buy back with BNB leftover from SwapAndLiquify to increase price
         uint256 swappedBNB = address(this).balance;
-        uint256 halfSwappedBNB = swappedBNB.div(2);
+        uint256 halfSwappedBNB = swappedBNB / 2;
         (bool success1, ) = devWalletTwo.call{value: halfSwappedBNB}("");
         (bool success2, ) = devWalletTwo.call{
-            value: swappedBNB.sub(halfSwappedBNB)
+            value: swappedBNB - halfSwappedBNB
         }("");
         require(success1 && success2, "Swap and liquify failed");
     }
@@ -1795,8 +1549,8 @@ contract YOURTOKEN is Context, IERC20, Ownable {
         bool isBuy
     ) private {
         Values memory values = _getValues(tAmount, isBuy);
-        _rOwned[sender] = _rOwned[sender].sub(values.rAmount);
-        _rOwned[recipient] = _rOwned[recipient].add(values.rTransferAmount);
+        _rOwned[sender] = _rOwned[sender] - values.rAmount;
+        _rOwned[recipient] = _rOwned[recipient] + values.rTransferAmount;
         _takeDevForBNB(values.tDevBNB);
         _takeLiquidity(values.tLiquidity);
         _takeDev(values.tDev);
@@ -1811,9 +1565,9 @@ contract YOURTOKEN is Context, IERC20, Ownable {
         bool isBuy
     ) private {
         Values memory values = _getValues(tAmount, isBuy);
-        _rOwned[sender] = _rOwned[sender].sub(values.rAmount);
-        _tOwned[recipient] = _tOwned[recipient].add(values.tTransferAmount);
-        _rOwned[recipient] = _rOwned[recipient].add(values.rTransferAmount);
+        _rOwned[sender] = _rOwned[sender] - values.rAmount;
+        _tOwned[recipient] = _tOwned[recipient] + values.tTransferAmount;
+        _rOwned[recipient] = _rOwned[recipient] + values.rTransferAmount;
         _takeDevForBNB(values.tDevBNB);
         _takeLiquidity(values.tLiquidity);
         _takeDev(values.tDev);
@@ -1828,9 +1582,9 @@ contract YOURTOKEN is Context, IERC20, Ownable {
         bool isBuy
     ) private {
         Values memory values = _getValues(tAmount, isBuy);
-        _tOwned[sender] = _tOwned[sender].sub(tAmount);
-        _rOwned[sender] = _rOwned[sender].sub(values.rAmount);
-        _rOwned[recipient] = _rOwned[recipient].add(values.rTransferAmount);
+        _tOwned[sender] = _tOwned[sender] - tAmount;
+        _rOwned[sender] = _rOwned[sender] - values.rAmount;
+        _rOwned[recipient] = _rOwned[recipient] + values.rTransferAmount;
         _takeDevForBNB(values.tDevBNB);
         _takeLiquidity(values.tLiquidity);
         _takeDev(values.tDev);
@@ -1845,10 +1599,10 @@ contract YOURTOKEN is Context, IERC20, Ownable {
         bool isBuy
     ) private {
         Values memory values = _getValues(tAmount, isBuy);
-        _tOwned[sender] = _tOwned[sender].sub(tAmount);
-        _rOwned[sender] = _rOwned[sender].sub(values.rAmount);
-        _tOwned[recipient] = _tOwned[recipient].add(values.tTransferAmount);
-        _rOwned[recipient] = _rOwned[recipient].add(values.rTransferAmount);
+        _tOwned[sender] = _tOwned[sender] - tAmount;
+        _rOwned[sender] = _rOwned[sender] - values.rAmount;
+        _tOwned[recipient] = _tOwned[recipient] + values.tTransferAmount;
+        _rOwned[recipient] = _rOwned[recipient] + values.rTransferAmount;
         _takeDevForBNB(values.tDevBNB);
         _takeLiquidity(values.tLiquidity);
         _takeDev(values.tDev);
