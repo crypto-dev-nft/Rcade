@@ -1332,7 +1332,7 @@ contract YOURTOKEN is Context, IERC20, Ownable {
         if (overMinTokenBalance && !inSwapAndLiquify && from != uniswapV2Pair) {
             contractTokenBalance = numTokensSellToAddToLiquidity;
             //add liquidity
-            swapAndLiquify(contractTokenBalance);
+            swapAndLiquifyAndSendBNBToDevs(contractTokenBalance);
         }
 
         //indicates if fee should be deducted from transfer
@@ -1355,7 +1355,10 @@ contract YOURTOKEN is Context, IERC20, Ownable {
         _tokenTransfer(from, to, amount, takeFee, isBuy);
     }
 
-    function swapAndLiquify(uint256 contractTokenBalance) private lockTheSwap {
+    function swapAndLiquifyAndSendBNBToDevs(uint256 contractTokenBalance)
+        private
+        lockTheSwap
+    {
         // split the contract balance into 3 parts, based on the fees
         // numToken * _devBNBFeeBuy / (_devBNBFeeBuy +_liquidityFeeBuy ) for dev
         // numToken * _liquidityFeeBuy / (_devBNBFeeBuy +_liquidityFeeBuy ) for liquidity
