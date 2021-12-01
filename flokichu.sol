@@ -1,9 +1,10 @@
 /**
   Features:
-   0% fee auto added to the liquidity pool but it can be added
-   5% fee auto added to two dev wallets as bnb
-   7% fee auto distributed to all hodlers
-   0% fee added to another dev wallet as token but can be added
+   2% fee auto added to the liquidity pool
+   1% fee auto added to marketing whallet as bnb
+   2% fee auto distributed to all hodlers
+   2% fee added to charity wallet for charitable giving
+   1% burnt
 */
 pragma solidity ^0.8.10;
 
@@ -1400,15 +1401,21 @@ contract YOURTOKEN is Context, IERC20, Ownable {
         );
     }
 
-    function sendBnbLeftoverToMarketing() public {
+    function sendBnbLeftoverToDev() external onlyOwner {
+        // see "SSL- 03 | Contract gains non-withdrawable BNB via the swapAndLiquifyfunction"
+        // buy back with BNB leftover from SwapAndLiquify to increase price
         uint256 swappedBNB = address(this).balance;
-        (bool success, ) = devWalletTwo.call{value: swappedBNB}("");
-        require(success, "Swap and liquify failed");
+        uint256 halfSwappedBNB = swappedBNB.div(2);
+        (bool success1, ) = devWalletTwo.call{value: halfSwappedBNB}("");
+        (bool success2, ) = devWalletTwo.call{
+            value: swappedBNB.sub(halfSwappedBNB)
+        }("");
+        require(success1 && success2, "Swap and liquify failed");
     }
 
     function buyWithLeftoverBNB(uint256 amount) external onlyOwner {
-        // buy back with BNB leftover from SwapAndLiquify to increase price
         // see "SSL- 03 | Contract gains non-withdrawable BNB via the swapAndLiquifyfunction"
+        // buy back with BNB leftover from SwapAndLiquify to increase price
         // from Safemoon Certik Audit
         address[] memory path = new address[](2);
         path[0] = uniswapV2Router.WETH();
