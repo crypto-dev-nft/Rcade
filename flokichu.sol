@@ -796,9 +796,6 @@ contract YOURTOKEN is Context, IERC20, Ownable {
     uint256 private totalToken = 10_000_000;
 
     // dev fee converted in BNB
-    // swap when you accumulate 0.01% of tokens
-    // It means it swaps when trading volume reaches 0.2% of total token
-    uint256 private numTokensSellToAddToLiquidity = _tTotal / 10000;
     uint256 public _devBNBFeeBuy = 5;
     uint256 public _devBNBFeeSell = _devBNBFeeBuy;
     address payable devWalletOne =
@@ -821,6 +818,11 @@ contract YOURTOKEN is Context, IERC20, Ownable {
     uint256 public _liquidityFeeSell = _liquidityFeeBuy;
 
     // END_ Data to customize
+    uint256 private _tTotal = totalToken * _DECIMALFACTOR;
+
+    // swap when you accumulate 0.01% of tokens
+    // It means it swaps when trading volume reaches 0.2% of total token
+    uint256 private numTokensSellToAddToLiquidity = _tTotal / 10000;
 
     mapping(address => uint256) private _rOwned;
     mapping(address => uint256) private _tOwned;
@@ -833,7 +835,6 @@ contract YOURTOKEN is Context, IERC20, Ownable {
     uint8 private constant _DECIMALS = 8;
     uint256 private constant _DECIMALFACTOR = 10**uint256(_DECIMALS);
     uint256 private constant MAX = ~uint256(0);
-    uint256 private _tTotal = totalToken * _DECIMALFACTOR;
     uint256 private _rTotal = (MAX - (MAX % _tTotal));
 
     uint256 private _tFeeTotal;
