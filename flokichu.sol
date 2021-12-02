@@ -4,7 +4,7 @@
    7% fee auto distributed to all hodlers
    0% fee added to another dev wallet as token but can be added
 
-   SafeMath was removed because it is now useleff for solidity > 0.8.0
+   SafeMath was removed because it is now useless for solidity >= 0.8.0
 */
 pragma solidity ^0.8.10;
 
@@ -790,11 +790,37 @@ interface IUniswapV2Router02 is IUniswapV2Router01 {
 
 contract YOURTOKEN is Context, IERC20, Ownable {
     using Address for address;
+    // Data to customize
+    string private constant _name = "YOURTOKEN";
+    string private constant _symbol = "YOURTOKEN";
+    uint256 private totalToken = 10_000_000;
+
+    // dev fee converted in BNB
+    // swap when you accumulate 0.01% of tokens
+    // It means it swaps when trading volume reaches 0.2% of total token
+    uint256 private numTokensSellToAddToLiquidity = _tTotal / 10000;
+    uint256 public _devBNBFeeBuy = 5;
+    uint256 public _devBNBFeeSell = _devBNBFeeBuy;
     address payable devWalletOne =
         payable(0x000000000000000000000000000000000000dEaD);
     address payable devWalletTwo =
         payable(0x000000000000000000000000000000000000dEaD);
-    uint256 private _tTotal = 10_000_000 * _DECIMALFACTOR;
+
+    // dev fee to recover token, optionnal, set to 0
+    uint256 public _optionalDevFeeBuy = 0;
+    uint256 public _optionalDevFeeSell = _optionalDevFeeBuy;
+    address payable devWalletOptional =
+        payable(0x000000000000000000000000000000000000dEaD);
+
+    // redistribution tax fee
+    uint256 public _taxFeeBuy = 7;
+    uint256 public _taxFeeSell = _taxFeeBuy;
+
+    // automatic liquidity fee, optional, set to 0
+    uint256 public _liquidityFeeBuy = 0;
+    uint256 public _liquidityFeeSell = _liquidityFeeBuy;
+
+    // END_ Data to customize
 
     mapping(address => uint256) private _rOwned;
     mapping(address => uint256) private _tOwned;
@@ -807,36 +833,22 @@ contract YOURTOKEN is Context, IERC20, Ownable {
     uint8 private constant _DECIMALS = 8;
     uint256 private constant _DECIMALFACTOR = 10**uint256(_DECIMALS);
     uint256 private constant MAX = ~uint256(0);
+    uint256 private _tTotal = totalToken * _DECIMALFACTOR;
     uint256 private _rTotal = (MAX - (MAX % _tTotal));
 
-    // Add to liquidity when accumulates 0.1% of supply
-    uint256 private numTokensSellToAddToLiquidity = _tTotal / 10000; // swap when you accumulate 0.01% of tokens
     uint256 private _tFeeTotal;
 
-    string private constant _name = "YOURTOKEN";
-    string private constant _symbol = "YOURTOKEN";
-
-    uint256 public _taxFeeBuy = 7;
-    uint256 public _taxFeeSell = _taxFeeBuy;
     uint256 private _previousTaxFeeBuy = _taxFeeBuy;
-    uint256 private _previousTaxFeeSell = _taxFeeBuy;
+    uint256 private _previousTaxFeeSell = _taxFeeSell;
 
-    address payable devWalletOptional =
-        payable(0x000000000000000000000000000000000000dEaD);
-    uint256 public _optionalDevFeeBuy = 0;
-    uint256 public _optionalDevFeeSell = _optionalDevFeeBuy;
     uint256 private _previousDevFeeBuy = _optionalDevFeeBuy;
-    uint256 private _previousDevFeeSell = _optionalDevFeeBuy;
+    uint256 private _previousDevFeeSell = _optionalDevFeeSell;
 
-    uint256 public _liquidityFeeBuy = 0;
-    uint256 public _liquidityFeeSell = _liquidityFeeBuy;
     uint256 private _previousLiquidityFeeBuy = _liquidityFeeBuy;
-    uint256 private _previousLiquidityFeeSell = _liquidityFeeBuy;
+    uint256 private _previousLiquidityFeeSell = _liquidityFeeSell;
 
-    uint256 public _devBNBFeeBuy = 5;
-    uint256 public _devBNBFeeSell = _devBNBFeeBuy;
     uint256 private _previousdevBNBFeeBuy = _devBNBFeeBuy;
-    uint256 private _previousdevBNBFeeSell = _devBNBFeeBuy;
+    uint256 private _previousdevBNBFeeSell = _devBNBFeeSell;
 
     IUniswapV2Router02 public uniswapV2Router;
     address public uniswapV2Pair;
