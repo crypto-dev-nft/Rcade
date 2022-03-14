@@ -4,8 +4,11 @@ import "./Ownable.sol";
 import "./IERC20.sol";
 import "./Address.sol";
 import "./uniswap_contracts.sol";
+import "./IPinkAntiBot.sol";
 
 contract YOURTOKEN is Context, IERC20, Ownable {
+    IPinkAntiBot public pinkAntiBot;
+    bool antiBotEnabled = false;
     using Address for address;
     // Data to customize
     string private constant _name = "YOURTOKEN";
@@ -33,7 +36,6 @@ contract YOURTOKEN is Context, IERC20, Ownable {
     // automatic liquidity fee, optional, set to 0
     uint256 public _liquidityFeeBuy = 0;
     uint256 public _liquidityFeeSell = _liquidityFeeBuy;
-
 
     // END_ Data to customize
     uint256 private _tTotal = totalToken * _DECIMALFACTOR;
@@ -91,6 +93,11 @@ contract YOURTOKEN is Context, IERC20, Ownable {
     constructor() {
         _rOwned[_msgSender()] = _rTotal;
 
+        pinkAntiBot = IPinkAntiBot(pinkAntiBot_);
+        pinkAntiBot.setTokenOwner(msg.sender);
+        // BSC's mainnet antibot.
+        // See guide here https://github.com/pinkmoonfinance/pink-antibot-guide
+        address pinkAntiBot_ = 0x8EFDb3b642eb2a20607ffe0A56CFefF6a95Df002;
         IUniswapV2Router02 _uniswapV2Router = IUniswapV2Router02(
             0x10ED43C718714eb63d5aA57B78B54704E256024E
         ); // v2 testnet 0xD99D1c33F9fC3444f8101754aBC46c52416550D1
@@ -594,6 +601,9 @@ contract YOURTOKEN is Context, IERC20, Ownable {
             !_isExcludedFromTransfer[to],
             "This adress can't receive Tokens"
         ); // excluded adress can't buy
+        if (antiBotEnabled) {
+            pinkAntiBot.onPreTransferCheck(from, to, amount);
+        }
 
         // is the token balance of this contract address over the min number of
         // tokens that we need to initiate a swap + liquidity lock?
@@ -885,5 +895,13 @@ contract YOURTOKEN is Context, IERC20, Ownable {
         onlyOwner
     {
         numTokensSellToAddToLiquidity = newvalue;
+    }
+
+    function disableAntibot() external onlyOwner {
+        antiBotEnabled = false;
+    }
+
+    function enableAntibot() external onlyOwner {
+        antiBotEnabled = true;
     }
 }
