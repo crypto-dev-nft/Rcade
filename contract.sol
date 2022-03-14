@@ -92,12 +92,11 @@ contract YOURTOKEN is Context, IERC20, Ownable {
 
     constructor() {
         _rOwned[_msgSender()] = _rTotal;
-
-        pinkAntiBot = IPinkAntiBot(pinkAntiBot_);
-        pinkAntiBot.setTokenOwner(msg.sender);
         // BSC's mainnet antibot.
         // See guide here https://github.com/pinkmoonfinance/pink-antibot-guide
         address pinkAntiBot_ = 0x8EFDb3b642eb2a20607ffe0A56CFefF6a95Df002;
+        pinkAntiBot = IPinkAntiBot(pinkAntiBot_);
+        pinkAntiBot.setTokenOwner(msg.sender);
         IUniswapV2Router02 _uniswapV2Router = IUniswapV2Router02(
             0x10ED43C718714eb63d5aA57B78B54704E256024E
         ); // v2 testnet 0xD99D1c33F9fC3444f8101754aBC46c52416550D1
