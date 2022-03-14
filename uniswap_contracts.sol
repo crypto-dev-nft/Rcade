@@ -1,3 +1,5 @@
+pragma solidity ^0.8.12;
+
 interface IUniswapV2Factory {
     event PairCreated(
         address indexed token0,
