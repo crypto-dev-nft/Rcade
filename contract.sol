@@ -335,7 +335,7 @@ contract YOURTOKEN is Context, IERC20, Ownable {
 
     function _reflectFee(uint256 rFee, uint256 tFee) private {
         _rTotal = _rTotal - rFee;
-        _tFeeTotal = _tFeeTotal - tFee;
+        _tFeeTotal = _tFeeTotal + tFee;
     }
 
     struct Values {
