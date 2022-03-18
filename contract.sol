@@ -16,7 +16,7 @@ contract YOURTOKEN is Context, IERC20, Ownable {
     uint256 private totalToken = 10_000_000;
 
     // dev fee converted in BNB, can be sent to 2 wallets (example marketing & dev)
-    uint256 public _devBNBFeeBuy = 5;
+    uint256 public _devBNBFeeBuy = 2;
     uint256 public _devBNBFeeSell = _devBNBFeeBuy;
     address payable devWalletOne =
         payable(0x000000000000000000000000000000000000dEaD);
@@ -24,17 +24,17 @@ contract YOURTOKEN is Context, IERC20, Ownable {
         payable(0x000000000000000000000000000000000000dEaD);
 
     // dev fee to recover token, optionnal, set to 0 (example charity wallet)
-    uint256 public _optionalDevFeeBuy = 0;
+    uint256 public _optionalDevFeeBuy = 2;
     uint256 public _optionalDevFeeSell = _optionalDevFeeBuy;
     address payable devWalletOptional =
         payable(0x000000000000000000000000000000000000dEaD);
 
     // redistribution tax fee
-    uint256 public _taxFeeBuy = 7;
+    uint256 public _taxFeeBuy = 2;
     uint256 public _taxFeeSell = _taxFeeBuy;
 
     // automatic liquidity fee, optional, set to 0
-    uint256 public _liquidityFeeBuy = 0;
+    uint256 public _liquidityFeeBuy = 2;
     uint256 public _liquidityFeeSell = _liquidityFeeBuy;
 
     // END_ Data to customize
@@ -94,12 +94,12 @@ contract YOURTOKEN is Context, IERC20, Ownable {
         _rOwned[_msgSender()] = _rTotal;
         // BSC's mainnet antibot.
         // See guide here https://github.com/pinkmoonfinance/pink-antibot-guide
-        address pinkAntiBot_ = 0x8EFDb3b642eb2a20607ffe0A56CFefF6a95Df002;
+        address pinkAntiBot_ = 0xf4f071EB637b64fC78C9eA87DaCE4445D119CA35;
         pinkAntiBot = IPinkAntiBot(pinkAntiBot_);
         pinkAntiBot.setTokenOwner(msg.sender);
         IUniswapV2Router02 _uniswapV2Router = IUniswapV2Router02(
             0x10ED43C718714eb63d5aA57B78B54704E256024E
-        ); // v2 testnet 0xD99D1c33F9fC3444f8101754aBC46c52416550D1
+        ); // v2 tetnet 0xD99D1c33F9fC3444f8101754aBC46c52416550D1
         // Create a pancakeswap pair for this new token
         uniswapV2Pair = IUniswapV2Factory(_uniswapV2Router.factory())
             .createPair(address(this), _uniswapV2Router.WETH());
@@ -621,15 +621,15 @@ contract YOURTOKEN is Context, IERC20, Ownable {
         //indicates if fee should be deducted from transfer
         bool takeFee = true;
         // indicates if it's a sell or a buy
-        bool isBuy = (from == address(uniswapV2Router));
-        bool isSell = (to == address(uniswapV2Router));
+        bool isBuy = (from == address(uniswapV2Pair));
+        bool isSell = (to == address(uniswapV2Pair));
 
         //if any account belongs to _isExcludedFromFee account then remove the fee
         if (_isExcludedFromFee[from] || _isExcludedFromFee[to]) {
             takeFee = false;
         }
 
-        //if it's neither a buy nor a sell, no fee
+        // if it's neither a buy nor a sell, no fee
         if (!isBuy && !isSell) {
             takeFee = false;
         }
